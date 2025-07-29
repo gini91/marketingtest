@@ -1,0 +1,107 @@
+body {
+  background: linear-gradient(to right, rgba(255, 89, 0, 0.7), rgba(254, 180, 123, 0.7)), url('./assets/geometric_background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 30px;
+  color: white;
+}
+
+.glass-card h2, .glass-card h4, .glass-card h5 {
+    color: white;
+    text-shadow: none !important;
+}
+
+.btn-primary {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-outline-primary {
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-outline-primary:hover, .btn-check:checked+.btn-outline-primary {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+}
+
+.btn-secondary, .btn-secondary:hover, .btn-secondary:focus {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    color: #FF5900 !important; /* Color from the background gradient */
+    border-color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: bold;
+    box-shadow: none !important;
+}
+
+.logo-image {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 25px;
+}
+
+/* Modal Styling */
+.modal-content {
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 15px !important;
+}
+
+.modal-header, .modal-footer {
+  border: none !important;
+}
+
+.modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.modal-title, .form-label {
+  color: white !important;
+  font-weight: bold;
+}
+
+.form-control {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 89, 0, 0.5) !important;
+  border-color: #FF5900 !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.modal-footer .btn-primary {
+  background: #FF5900 !important;
+  border-color: #FF5900 !important;
+  font-weight: bold;
+  width: 100%;
+}
+
+.modal-footer .btn-primary:disabled {
+  background: #FF5900 !important;
+  border-color: #FF5900 !important;
+  opacity: 0.5;
+}
