@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_API_URL=https://marketingtest-ojmbnptuj-ginis-projects.vercel.app react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
