@@ -97,7 +97,10 @@ body {
   background: #FF5900 !important;
   border-color: #FF5900 !important;
   font-weight: bold;
-  width: 100%;
+  width: auto; /* Allow button to size to content */
+  padding: 10px 30px; /* Adjust padding for better appearance */
+  border-radius: 50px; /* Make it oval */
+  font-size: 1.1rem; /* Increase font size */
 }
 
 .modal-footer .btn-primary:disabled {

@@ -65,7 +65,7 @@ const App = () => {
     }
   };
 
-  const handleConfirmEstimate = () => {
+  const handleConfirmEstimate = async () => {
     if (product && volume && quantity) {
       const basePriceRange = pricePerKg[product];
       let discount = 1.0;
@@ -81,6 +81,31 @@ const App = () => {
 
       setUnitPrice({ min: minUnitPrice, max: maxUnitPrice });
       setEstimate({ min: minEstimate, max: maxEstimate });
+
+      // Send data to Vercel Serverless Function
+      try {
+        const response = await fetch('/api/save-lead', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userInfo,
+            product,
+            volume,
+            quantity,
+            estimate: { min: minEstimate, max: maxEstimate },
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log('Data sent to Google Sheet successfully.');
+      } catch (error) {
+        console.error('Error sending data to Google Sheet:', error);
+        alert('데이터 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
       
       handleCloseModal();
       setView('result');
@@ -138,7 +163,7 @@ const App = () => {
 
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>정보를 입력해주세요</Modal.Title>
+          <Modal.Title style={{ color: 'white', fontWeight: 'bold' }}>정보를 입력해주시면,<br/>결과 화면에서 단가를 확인할 수 있습니다.</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -159,9 +184,9 @@ const App = () => {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleConfirmEstimate} disabled={!userInfo.name || !userInfo.brand || !userInfo.email || !isEmailValid} className="w-100">
-            확인
+        <Modal.Footer className="d-flex justify-content-center">
+          <Button variant="primary" onClick={handleConfirmEstimate} disabled={!userInfo.name || !userInfo.brand || !userInfo.email || !isEmailValid}>
+            예상 견적 바로 확인하기
           </Button>
         </Modal.Footer>
       </Modal>
