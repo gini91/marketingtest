@@ -90,7 +90,10 @@ const App = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userInfo,
+            name: userInfo.name,
+            email: userInfo.email,
+            phone: 'N/A', // Placeholder for phone number
+            brand: userInfo.brand,
             product,
             volume,
             quantity,
