@@ -99,7 +99,7 @@ const App = () => {
 
       // Send data to Vercel Serverless Function
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/save-lead`, {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzP4-J3kZqeKjH4Zlr-OjwyOTniKtdUhYARwYDqnM9E9zQygjt6pCZ2IpMflbt5seyV/exec', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
