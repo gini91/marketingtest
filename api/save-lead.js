@@ -1,6 +1,14 @@
 const { google } = require('googleapis');
 
 module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://marketingtest-three.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end(); // CORS Preflight
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
