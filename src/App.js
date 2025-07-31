@@ -82,6 +82,20 @@ const App = () => {
       setUnitPrice({ min: minUnitPrice, max: maxUnitPrice });
       setEstimate({ min: minEstimate, max: maxEstimate });
 
+      const dataToSave = {
+        name: userInfo.name,
+        email: userInfo.email,
+        phone: 'N/A', // Placeholder for phone number
+        brand: userInfo.brand,
+        product,
+        volume,
+        quantity,
+        estimate: { min: minEstimate, max: maxEstimate },
+      };
+
+      // Log the data to the browser console for debugging
+      console.log('Sending data to API:', dataToSave);
+
       // Send data to Vercel Serverless Function
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/save-lead`, {
@@ -89,16 +103,7 @@ const App = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            name: userInfo.name,
-            email: userInfo.email,
-            phone: 'N/A', // Placeholder for phone number
-            brand: userInfo.brand,
-            product,
-            volume,
-            quantity,
-            estimate: { min: minEstimate, max: maxEstimate },
-          }),
+          body: JSON.stringify(dataToSave),
         });
 
         if (!response.ok) {
