@@ -66,6 +66,8 @@ const App = () => {
   };
 
   const handleConfirmEstimate = async () => {
+    console.log(" handleConfirmEstimate triggered");
+    console.log({ product, volume, quantity, userInfo });
     if (product && volume && quantity) {
       const basePriceRange = pricePerKg[product];
       let discount = 1.0;
