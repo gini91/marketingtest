@@ -85,7 +85,6 @@ const App = () => {
       const dataToSave = {
         name: userInfo.name,
         email: userInfo.email,
-        phone: 'N/A', // Placeholder for phone number
         brand: userInfo.brand,
         product,
         volume,

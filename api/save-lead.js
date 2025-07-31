@@ -1,5 +1,3 @@
-
-
 const { google } = require('googleapis');
 
 module.exports = async (req, res) => {
@@ -7,10 +5,12 @@ module.exports = async (req, res) => {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const { name, email, phone, brand, product, volume, quantity, estimate } = req.body;
+  // Destructure the actual data coming from the frontend
+  const { name, email, brand, product, volume, quantity, estimate } = req.body;
 
-  if (!name || !email) { // Only name and email are strictly required
-    return res.status(400).send('Missing required fields: name, email');
+  // Basic validation
+  if (!name || !email || !brand || !product || !volume || !quantity || !estimate) {
+    return res.status(400).send('Missing required fields.');
   }
 
   try {
@@ -25,23 +25,36 @@ module.exports = async (req, res) => {
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = '1ex_VUsYHii_R3uOdLqnwPXcwLiEEfFufOpstrnfLuh8';
 
-    // Prepare a header row if the sheet is empty
-    const header = ['Timestamp', 'Name', 'Email', 'Phone', 'Brand', 'Product', 'Volume', 'Quantity', 'Min Estimate', 'Max Estimate'];
-    const estimateString = `~ ${Math.round(estimate.max).toLocaleString()}원`;
+    // Get current timestamp in Korean time
+    const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
-    const response = await sheets.spreadsheets.values.append({
+    // Prepare the row to be inserted
+    const values = [[ 
+      timestamp,
+      name,
+      email,
+      brand,
+      product,
+      volume,
+      quantity,
+      Math.round(estimate.min),
+      Math.round(estimate.max)
+    ]];
+
+    // Append data to the sheet
+    await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: 'Sheet1!A1', // Assumes data is appended to 'Sheet1'
+      range: 'Sheet1!A1', // Appends to the first empty row in Sheet1
       valueInputOption: 'USER_ENTERED',
       resource: {
-        values: [[new Date().toISOString(), name, email, phone, brand, product, volume, quantity, Math.round(estimate.min), Math.round(estimate.max)]],
+        values,
       },
     });
 
-    res.status(200).json({ message: 'Data saved successfully!', data: response.data });
+    res.status(200).json({ message: 'Data saved successfully!' });
 
   } catch (error) {
     console.error('Error saving data to Google Sheets:', error);
-    res.status(500).send('Error saving data');
+    res.status(500).json({ error: 'Error saving data to Google Sheets', details: error.message });
   }
 };
