@@ -107,10 +107,23 @@ const App = () => {
           body: JSON.stringify(dataToSave),
         });
 
+        // --- START: Added/Modified for debugging API response ---
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          let errorData = {};
+          try {
+            errorData = await response.json();
+          } catch (e) {
+            // If response is not JSON, get text
+            errorData = { message: await response.text() };
+          }
+          console.error('API Error Response:', errorData);
+          throw new Error(`HTTP error! status: ${response.status}, Details: ${errorData.message || errorData.error || JSON.stringify(errorData)}`);
         }
+        const successData = await response.json();
+        console.log('API Success Response:', successData);
         console.log('Data sent to Google Sheet successfully.');
+        // --- END: Added/Modified for debugging API response ---
+
       } catch (error) {
         console.error('Error sending data to Google Sheet:', error);
         alert('데이터 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
