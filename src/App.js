@@ -16,7 +16,7 @@ import './App.css';
 // Price per kg as a range
 const pricePerKg = {
   '토너': { min: 30000, max: 40000 },
-  '세럼': { min: 50000, max: 60000 },
+  '세럼': { min: 40000, max: 50000 },
   '앰플': { min: 50000, max: 60000 },
   '크림': { min: 60000, max: 70000 },
 };
@@ -71,8 +71,8 @@ const App = () => {
     if (product && volume && quantity) {
       const basePriceRange = pricePerKg[product];
       let discount = 1.0;
-      if (quantity === 3000) discount = 0.9;
-      else if (quantity === 5000) discount = 0.8;
+      if (quantity >= 3000 && quantity < 5000) discount = 0.95; // 3000개 이상 5% 할인
+      else if (quantity >= 5000) discount = 0.9; // 5000개 이상 10% 할인
 
       const discountedPricePerKg = { min: basePriceRange.min * discount, max: basePriceRange.max * discount };
       const weightInKg = parseInt(volume.replace('ml', '')) / 1000;
@@ -99,7 +99,7 @@ const App = () => {
 
       // Send data to Vercel Serverless Function
       try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzP4-J3kZqeKjH4Zlr-OjwyOTniKtdUhYARwYDqnM9E9zQygjt6pCZ2IpMflbt5seyV/exec', {
+        const response = await fetch('/api/save-to-notion', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ const App = () => {
   return (
     <Container className="mt-5">
       <Card className="glass-card">
-        {view === 'form' && <Card.Header as="h2" className="text-center">1분 만에<br />견적 확인하기</Card.Header>}
+        {view === 'form' && <Card.Header as="h2" className="text-center">10초 만에<br />견적 확인하기</Card.Header>}
         <Card.Body>{view === 'form' ? renderForm() : renderResult()}</Card.Body>
       </Card>
 

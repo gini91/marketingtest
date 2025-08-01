@@ -108,3 +108,7 @@ body {
   border-color: #FF5900 !important;
   opacity: 0.5;
 }
+
+.invalid-feedback {
+  color: white !important;
+}
