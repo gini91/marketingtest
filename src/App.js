@@ -99,7 +99,7 @@ const App = () => {
 
       // Send data to Vercel Serverless Function
       try {
-        const response = await fetch('/api/save-to-notion', {
+        const response = await fetch('http://localhost:3001/api/save-to-notion', { // Changed URL to local API server
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -121,11 +121,11 @@ const App = () => {
         }
         const successData = await response.json();
         console.log('API Success Response:', successData);
-        console.log('Data sent to Google Sheet successfully.');
+        console.log('Data sent to Notion successfully.'); // Changed success message
         // --- END: Added/Modified for debugging API response ---
 
       } catch (error) {
-        console.error('Error sending data to Google Sheet:', error);
+        console.error('Error sending data to Notion:', error);
         alert('데이터 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
       }
       

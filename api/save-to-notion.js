@@ -1,10 +1,10 @@
 const { Client } = require('@notionhq/client');
 
 const notion = new Client({
-  auth: process.env.NOTION_INTEGRATION_TOKEN,
+  auth: 'secret_RjZTybHmQUSz0EqZXGTcadw2DaGQyaUzBjtid0ipW0a',
 });
 
-const databaseId = process.env.NOTION_DATABASE_ID;
+const databaseId = '242d872b-594c-803d-a4db-00379b9b3ca4';
 
 module.exports = async (req, res) => {
   // CORS Headers
