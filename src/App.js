@@ -16,9 +16,9 @@ import './App.css';
 // Price per kg as a range
 const pricePerKg = {
   '토너': { min: 30000, max: 40000 },
-  '세럼': { min: 40000, max: 50000 },
-  '앰플': { min: 50000, max: 60000 },
-  '크림': { min: 60000, max: 70000 },
+  '세럼': { min: 15000, max: 16500 },
+  '앰플': { min: 18000, max: 19800 },
+  '크림': { min: 25000, max: 27500 },
 };
 
 const App = () => {
@@ -71,13 +71,21 @@ const App = () => {
     if (product && volume && quantity) {
       const basePriceRange = pricePerKg[product];
       let discount = 1.0;
-      if (quantity >= 3000 && quantity < 5000) discount = 0.95; // 3000개 이상 5% 할인
-      else if (quantity >= 5000) discount = 0.9; // 5000개 이상 10% 할인
+      if (quantity >= 3000 && quantity < 5000) discount = 0.85; // 3000개 이상 15% 할인
+      else if (quantity >= 5000) discount = 0.7; // 5000개 이상 30% 할인
 
-      const discountedPricePerKg = { min: basePriceRange.min * discount, max: basePriceRange.max * discount };
       const weightInKg = parseInt(volume.replace('ml', '')) / 1000;
-      const minUnitPrice = discountedPricePerKg.min * weightInKg;
-      const maxUnitPrice = discountedPricePerKg.max * weightInKg;
+      let minUnitPrice, maxUnitPrice;
+
+      if (product === '세럼' || product === '앰플' || product === '크림') {
+        minUnitPrice = (basePriceRange.min * 1.3 * weightInKg * discount) + 600;
+        maxUnitPrice = (basePriceRange.max * 1.3 * weightInKg * discount) + 600;
+      } else { // 토너
+        const discountedPricePerKg = { min: basePriceRange.min * discount, max: basePriceRange.max * discount };
+        minUnitPrice = discountedPricePerKg.min * weightInKg;
+        maxUnitPrice = discountedPricePerKg.max * weightInKg;
+      }
+      
       const minEstimate = minUnitPrice * quantity;
       const maxEstimate = maxUnitPrice * quantity;
 
