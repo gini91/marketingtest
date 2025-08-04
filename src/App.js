@@ -97,9 +97,15 @@ const App = () => {
       // Log the data to the browser console for debugging
       console.log('Sending data to API:', dataToSave);
 
+      // 로컬 개발 환경에서는 http://localhost:3001/api/save-to-notion 으로,
+      // Vercel 배포 환경에서는 /api/save-to-notion 으로 요청합니다.
+      const apiUrl = process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:3001/api/save-to-notion' 
+        : '/api/save-to-notion';
+
       // Send data to Vercel Serverless Function
       try {
-        const response = await fetch('http://localhost:3001/api/save-to-notion', { // Changed URL to local API server
+        const response = await fetch(apiUrl, { // Changed URL to be dynamic
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

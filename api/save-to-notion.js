@@ -1,14 +1,23 @@
 const { Client } = require('@notionhq/client');
 
+// Notion 클라이언트를 초기화합니다.
+// Vercel 배포 환경에서는 환경 변수를 사용하고,
+// 로컬 개발 환경에서는 local-api-server.js에서 설정한 환경 변수를 사용합니다.
 const notion = new Client({
-  auth: 'secret_RjZTybHmQUSz0EqZXGTcadw2DaGQyaUzBjtid0ipW0a',
+  auth: process.env.NOTION_INTEGRATION_TOKEN,
 });
 
-const databaseId = '242d872b-594c-803d-a4db-00379b9b3ca4';
+const databaseId = process.env.NOTION_DATABASE_ID;
 
 module.exports = async (req, res) => {
   // CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://marketingtest-three.vercel.app');
+  // 로컬 및 배포 환경 모두 허용하도록 설정
+  const allowedOrigins = ['http://localhost:3000', 'https://marketingtest-three.vercel.app'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -19,6 +28,11 @@ module.exports = async (req, res) => {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
+  }
+
+  if (!databaseId) {
+    console.error('Error: NOTION_DATABASE_ID is not set in environment variables.');
+    return res.status(500).json({ error: 'Server configuration error.' });
   }
 
   try {
@@ -35,7 +49,7 @@ module.exports = async (req, res) => {
       parent: { database_id: databaseId },
       properties: {
         'name': {
-          title: [
+          rich_text: [
             {
               text: {
                 content: name,
@@ -43,14 +57,9 @@ module.exports = async (req, res) => {
             },
           ],
         },
+        // 'email' 속성을 email 타입으로 변경
         'email': {
-          rich_text: [
-            {
-              text: {
-                content: email,
-              },
-            },
-          ],
+          email: email,
         },
         'brand': {
           rich_text: [
@@ -70,14 +79,9 @@ module.exports = async (req, res) => {
             },
           ],
         },
+        // 'volume' 속성을 number 타입으로 변경 (단위 제거)
         'volume': {
-          rich_text: [
-            {
-              text: {
-                content: volume,
-              },
-            },
-          ],
+          number: parseInt(volume.replace('ml', ''), 10),
         },
         'quantity': {
           number: quantity,
@@ -89,13 +93,9 @@ module.exports = async (req, res) => {
           number: Math.round(estimate.max),
         },
         'timestamp': {
-          rich_text: [
-            {
-              text: {
-                content: timestamp,
-              },
-            },
-          ],
+          date: {
+            start: new Date().toISOString(),
+          },
         },
       },
     });

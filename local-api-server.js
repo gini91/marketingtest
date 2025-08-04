@@ -1,3 +1,6 @@
+// .env 파일에서 환경 변수를 로드합니다.
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -16,14 +19,8 @@ app.use(cors({
 app.use(bodyParser.json());
 
 // /api/save-to-notion 엔드포인트 설정
-app.post('/api/save-to-notion', (req, res) => {
-  // 로컬 테스트를 위해 환경 변수를 직접 설정 (배포 시에는 제거해야 함!)
-  process.env.NOTION_INTEGRATION_TOKEN = 'secret_RjZTybHmQUSz0EqZXGTcadw2DaGQyaUzBjtid0ipW0a';
-  process.env.NOTION_DATABASE_ID = '242d872b-594c-803d-a4db-00379b9b3ca4';
-
-  // Vercel API Route 함수를 Express 미들웨어처럼 호출
-  saveToNotion(req, res);
-});
+// 이제 saveToNotion 함수는 process.env에서 직접 키를 읽어옵니다.
+app.post('/api/save-to-notion', saveToNotion);
 
 // OPTIONS 요청 처리 (CORS Preflight)
 app.options('/api/save-to-notion', cors());
